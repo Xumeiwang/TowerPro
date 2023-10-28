@@ -22,6 +22,10 @@ public class GameBoard : MonoBehaviour {
 		for (int i = 0, y = 0; y < size.y; y++) {
 			for (int x = 0; x < size.x; x++, i++) {
 				GameTile tile = tiles[i] = Instantiate(tilePrefab);
+				tile.IsAlternative = (x & 1) == 0;
+				if ((y & 1) == 0) {
+					tile.IsAlternative = !tile.IsAlternative;
+				}
 				tile.transform.SetParent(transform, false);
 				tile.transform.localPosition = new Vector3(
 					x - offset.x, 0f, y - offset.y
@@ -44,12 +48,23 @@ public class GameBoard : MonoBehaviour {
 		searchFrontier.Enqueue(tiles[tiles.Length / 2]);
 		while (searchFrontier.Count > 0) {
 			GameTile tile = searchFrontier.Dequeue();
-			
-			if (tile != null) {
-				searchFrontier.Enqueue(tile.GrowPathNorth());
-				searchFrontier.Enqueue(tile.GrowPathSouth());
-				searchFrontier.Enqueue(tile.GrowPathEast());
-				searchFrontier.Enqueue(tile.GrowPathWest());
+
+			if (tile != null)
+			{
+				if (tile.IsAlternative)
+				{
+					searchFrontier.Enqueue(tile.GrowPathNorth());
+					searchFrontier.Enqueue(tile.GrowPathSouth());
+					searchFrontier.Enqueue(tile.GrowPathEast());
+					searchFrontier.Enqueue(tile.GrowPathWest());
+				}
+				else
+				{
+					searchFrontier.Enqueue(tile.GrowPathWest());
+					searchFrontier.Enqueue(tile.GrowPathEast());
+					searchFrontier.Enqueue(tile.GrowPathSouth());
+					searchFrontier.Enqueue(tile.GrowPathNorth());
+				}
 			}
 		}
 		foreach (GameTile curTile in tiles) {

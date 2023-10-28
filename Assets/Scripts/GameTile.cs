@@ -1,11 +1,14 @@
 using UnityEngine;
-
+public enum GameTileContentType {
+	Empty, Destination
+}
 public class GameTile : MonoBehaviour {
 	
     [SerializeField]
     Transform arrow = default;
     GameTile north, east, south, west, nextOnPath;
-
+	
+    public bool IsAlternative { get; set; }
     int distance;
     static Quaternion
 	    northRotation = Quaternion.Euler(90f, 0f, 0f),

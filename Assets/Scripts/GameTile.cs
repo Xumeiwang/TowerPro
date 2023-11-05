@@ -1,6 +1,8 @@
 using UnityEngine;
 public enum GameTileContentType {
-	Empty, Destination
+	Empty,			//空格
+	Destination,	//目的地
+	Wall,			//墙
 }
 public class GameTile : MonoBehaviour {
 	
@@ -16,7 +18,19 @@ public class GameTile : MonoBehaviour {
 	    southRotation = Quaternion.Euler(90f, 180f, 0f),
 	    westRotation = Quaternion.Euler(90f, 270f, 0f);
     public bool HasPath => distance != int.MaxValue;
+    GameTileContent content;
 
+    public GameTileContent Content {
+	    get => content;
+	    set {
+		    Debug.Assert(value != null, "Null assigned to content!");
+		    if (content != null) {
+			    content.Recycle();
+		    }
+		    content = value;
+		    content.transform.localPosition = transform.localPosition;
+	    }
+    }
     public void ClearPath () {
 	    distance = int.MaxValue;
 	    nextOnPath = null;
@@ -40,13 +54,17 @@ public class GameTile : MonoBehaviour {
 		south.north = north;
 		north.south = south;
 	}
+	public void HidePath () {
+		arrow.gameObject.SetActive(false);
+	}
 	GameTile GrowPathTo (GameTile neighbor) {
 		if (!HasPath || neighbor == null || neighbor.HasPath) {
 			return null;
 		}
 		neighbor.distance = distance + 1;
 		neighbor.nextOnPath = this;
-		return neighbor;
+		return
+			neighbor.Content.Type != GameTileContentType.Wall ? neighbor : null;
 	}
 	public GameTile GrowPathNorth () => GrowPathTo(north);
 

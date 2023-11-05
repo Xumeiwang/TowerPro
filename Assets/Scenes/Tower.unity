@@ -154,6 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 6940479219863642567, guid: 7e9a56dc1af557e48a6d728689a049aa, type: 3}
   ground: {fileID: 1851065723}
+  gridTexture: {fileID: 2800000, guid: 1d309aea35fec114cbcebed19a9dcd68, type: 3}
 --- !u!4 &1045645187
 Transform:
   m_ObjectHideFlags: 0
@@ -162,7 +163,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1045645185}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.26205158, y: 0.01810813, z: 0.26655573}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -425,3 +426,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boardSize: {x: 11, y: 11}
   board: {fileID: 1045645186}
+  tileContentFactory: {fileID: 11400000, guid: 0daadf9f5cfa3b146ba28984cac6f60d, type: 2}

@@ -9,8 +9,9 @@ public class Game : MonoBehaviour {
 	GameBoard board = default;
 	[SerializeField]
 	GameTileContentFactory tileContentFactory = default;
+	Ray TouchRay => Camera.main.ScreenPointToRay(Input.mousePosition);
 	void Awake () {
-		board.Initialize(boardSize);
+		board.Initialize(boardSize, tileContentFactory);
 	}
 	void OnValidate () {
     		if (boardSize.x < 2) {
@@ -20,4 +21,26 @@ public class Game : MonoBehaviour {
     			boardSize.y = 2;
     		}
     	}
+	void Update () {
+		if (Input.GetMouseButtonDown(0)) {
+			HandleTouch();
+		}
+		else if (Input.GetMouseButtonDown(1)) {
+			HandleAlternativeTouch();
+		}
+	}
+
+	void HandleAlternativeTouch () {
+		GameTile tile = board.GetTile(TouchRay);
+		if (tile != null) {
+			board.ToggleDestination(tile);
+		}
+	}
+
+	void HandleTouch () {
+		GameTile tile = board.GetTile(TouchRay);
+		if (tile != null) {
+			board.ToggleWall(tile);
+		}
+	}
 }
